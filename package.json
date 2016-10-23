@@ -1,22 +1,28 @@
 {
   "name": "xwing-cards",
-  "version": "1.0.0",
-  "description": "Searchable card database for [X-Wing: The Miniatures Game](https://www.fantasyflightgames.com/en/products/x-wing/) by [Fantasy Flight Games](http://fantasyflightgames.com/).",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "0.1.0",
+  "description": "Searchable card database for X-Wing: The Miniatures Game",
+  "private": true,
+  "devDependencies": {
+    "react-scripts": "0.7.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rune-b/xwing-cards.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/rune-b/xwing-cards/issues"
   },
   "homepage": "https://github.com/rune-b/xwing-cards#readme",
   "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
     "xwing-data": "^0.21.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }
