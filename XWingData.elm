@@ -21,5 +21,5 @@ cardDecoder : Decoder Card
 cardDecoder =
   Decode.object2 Card
     ("name" := Decode.string)
-    (oneOf [ "text" := Decode.string, Decode.succeed "0" ] )
+    (oneOf [ "text" := Decode.string, Decode.succeed "" ] )
 

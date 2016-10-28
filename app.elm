@@ -7,6 +7,7 @@ import Task
 import Array exposing (..)
 import XWingData exposing (..)
 import Http
+import String
 
 main =
     App.program 
@@ -21,6 +22,7 @@ main =
 
 type alias Model = 
     { searchString : String
+    , cards: XWingData.Cards
     , searchResults : XWingData.Cards
     }
 
@@ -28,7 +30,8 @@ type alias Model =
 init : (Model, Cmd Msg)
 init = 
     ( Model 
-        "test"
+        ""
+        []
         []
     , getCardsCmd
     )
@@ -41,6 +44,7 @@ type Msg
     | Search String
     | GetCardsSuccess Cards
     | GetCardsFailed Http.Error
+    | Found Cards
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -48,9 +52,14 @@ update msg model =
         NoOp -> 
             model ! []
         Search text ->
-            ({ model | searchString = text }, Cmd.none)
+            ({ model | searchString = text }, searchCards text model.cards)
+        Found cards ->
+            let
+                x = Debug.log "Found" cards
+            in
+                ({ model | searchResults = cards }, Cmd.none)            
         GetCardsSuccess cards ->
-            ({ model | searchResults = cards }, Cmd.none)
+            ({ model | cards = cards }, Cmd.none)
         GetCardsFailed error ->
             let
                 x = Debug.log "GetCardsFailed" error
@@ -60,6 +69,18 @@ update msg model =
 getCardsCmd: Cmd Msg
 getCardsCmd =
     Task.perform GetCardsFailed GetCardsSuccess XWingData.getCards
+
+searchCards : String -> Cards -> Cmd Msg
+searchCards text cards =
+    let
+        found = List.filter (matchCard text) cards
+    in
+        Task.perform identity identity (Task.succeed (Found found))
+
+matchCard : String -> Card -> Bool
+matchCard text card =
+    (String.contains (String.toLower text) (String.toLower card.name)) 
+    || (String.contains (String.toLower text) (String.toLower card.text)) 
 
 -- VIEW
 
