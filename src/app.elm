@@ -54,10 +54,7 @@ update msg model =
         Search text ->
             ({ model | searchString = text }, searchCards text model.cards)
         Found cards ->
-            let
-                x = Debug.log "Found" cards
-            in
-                ({ model | searchResults = cards }, Cmd.none)            
+            ({ model | searchResults = cards }, Cmd.none)            
         GetCardsSuccess cards ->
             ({ model | cards = cards }, Cmd.none)
         GetCardsFailed error ->
