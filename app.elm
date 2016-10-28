@@ -5,6 +5,7 @@ import Html.Attributes exposing (..)
 import Dom exposing (focus)
 import Task
 import Array exposing (..)
+import XWingData exposing (..)
 
 main =
     App.program 
@@ -19,11 +20,6 @@ main =
 
 type alias Model = 
     { searchString : String
-    }
-
-type alias Card  = 
-    { name : String
-    , text: String
     }
 
 
@@ -61,11 +57,14 @@ view model =
             [ input [value model.searchString, onInput Search, autofocus True] []
             ]
         , section [id "results"]
-            [ text model.searchString
-            ]
+            (List.map viewCard cards)
         ]
-
+x = Debug.log "cards" cards
 -- SUBSCRIPTIONS
+
+viewCard : Card -> Html Msg
+viewCard card =
+    p [] [text (card.name ++ ", " ++ card.text)]
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
