@@ -88,7 +88,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ node "style" [type' "text/css"]
-            [text "@import url(css/styles.css)"]
+            [text "@import url(../css/styles.css)"]
         , header [] 
             [ h1 [] [text "X-Wing Card Finder"]
             ]

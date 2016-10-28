@@ -13,7 +13,7 @@ type alias Card  =
 
 getCards: Task Http.Error Cards
 getCards =
-    Http.get decoder "xwing-data/data/pilots.js"
+    Http.get decoder "../xwing-data/data/pilots.js"
 
 decoder = Decode.list cardDecoder
 
