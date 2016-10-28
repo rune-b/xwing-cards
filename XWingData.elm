@@ -1,7 +1,8 @@
 module XWingData exposing (..)
 
-
+import Http
 import Json.Decode as Decode exposing (..)
+import Task exposing (..)
 
 type alias Cards = List Card
 
@@ -10,29 +11,15 @@ type alias Card  =
     , text: String
     }
 
-test = """
-    [
-        {"name": "bob", "text": "blablabla"},
-        {"name": "aaa", "text": "xxx"}
-    ]
-  """
+getCards: Task Http.Error Cards
+getCards =
+    Http.get decoder "xwing-data/data/pilots.js"
 
+decoder = Decode.list cardDecoder
 
-decoder : Decoder Card
-decoder =
+cardDecoder : Decoder Card
+cardDecoder =
   Decode.object2 Card
     ("name" := Decode.string)
-    ("text" := Decode.string)
+    (oneOf [ "text" := Decode.string, Decode.succeed "0" ] )
 
-cards : List Card
-cards = 
-    let
-        result = decodeString (Decode.list decoder) test
-        x = Debug.log "result: " result
-    in 
-        case result of
-            Err msg ->
-                []
-            Ok cards ->  
-                cards
-    

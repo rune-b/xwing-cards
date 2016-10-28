@@ -6,6 +6,7 @@ import Dom exposing (focus)
 import Task
 import Array exposing (..)
 import XWingData exposing (..)
+import Http
 
 main =
     App.program 
@@ -20,6 +21,7 @@ main =
 
 type alias Model = 
     { searchString : String
+    , searchResults : XWingData.Cards
     }
 
 
@@ -27,13 +29,18 @@ init : (Model, Cmd Msg)
 init = 
     ( Model 
         "test"
-    ! []
+        []
+    , getCardsCmd
     )
 
 
 -- UPDATE
 
-type Msg = NoOp | Search String
+type Msg 
+    = NoOp 
+    | Search String
+    | GetCardsSuccess Cards
+    | GetCardsFailed Http.Error
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -41,7 +48,18 @@ update msg model =
         NoOp -> 
             model ! []
         Search text ->
-            { model | searchString = text } ! []
+            ({ model | searchString = text }, Cmd.none)
+        GetCardsSuccess cards ->
+            ({ model | searchResults = cards }, Cmd.none)
+        GetCardsFailed error ->
+            let
+                x = Debug.log "GetCardsFailed" error
+            in
+                (model, Cmd.none)
+
+getCardsCmd: Cmd Msg
+getCardsCmd =
+    Task.perform GetCardsFailed GetCardsSuccess XWingData.getCards
 
 -- VIEW
 
@@ -57,9 +75,10 @@ view model =
             [ input [value model.searchString, onInput Search, autofocus True] []
             ]
         , section [id "results"]
-            (List.map viewCard cards)
+            (List.map viewCard model.searchResults)
         ]
-x = Debug.log "cards" cards
+
+
 -- SUBSCRIPTIONS
 
 viewCard : Card -> Html Msg
