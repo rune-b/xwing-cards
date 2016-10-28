@@ -21,12 +21,21 @@ type alias Model =
     { searchString : String
     }
 
+type alias Card  = 
+    { name : String
+    , text: String
+    }
+
+
 init : (Model, Cmd Msg)
 init = 
     ( Model 
         "test"
     ! []
     )
+
+
+-- UPDATE
 
 type Msg = NoOp | Search String
 
@@ -48,7 +57,10 @@ view model =
         , header [] 
             [ h1 [] [text "X-Wing Card Finder"]
             ]
-        , div []
+        , section [id "search"]
+            [ input [value model.searchString, onInput Search, autofocus True] []
+            ]
+        , section [id "results"]
             [ text model.searchString
             ]
         ]
