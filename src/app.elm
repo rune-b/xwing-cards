@@ -106,13 +106,13 @@ viewCard card  =
             div [class "card pilot"] 
                 [ h1 [] [text pilot.name]
                 , img [src ("./xwing-data/images/" ++ pilot.imageUrl), alt pilot.name, title pilot.name] []
-                , div [class "name"] [text pilot.text]
+                , div [class "text"] [text pilot.text]
                 ]
         Upgrade upgrade ->            
             div [class "card upgrade"] 
                 [ h1 [] [text upgrade.name]
                 , img [src ("./xwing-data/images/" ++ upgrade.imageUrl), alt upgrade.name, title upgrade.name] []
-                , div [class "name"] [text upgrade.text]
+                , div [class "text"] [text upgrade.text]
                 ]
 
 -- SUBSCRIPTIONS
