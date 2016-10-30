@@ -105,13 +105,13 @@ viewCard card  =
         Pilot pilot ->
             div [class "card pilot"] 
                 [ h1 [] [text pilot.name]
-                , img [src ("../xwing-data/images/" ++ pilot.imageUrl), alt pilot.name, title pilot.name] []
+                , img [src ("./xwing-data/images/" ++ pilot.imageUrl), alt pilot.name, title pilot.name] []
                 , div [class "name"] [text pilot.text]
                 ]
         Upgrade upgrade ->            
             div [class "card upgrade"] 
                 [ h1 [] [text upgrade.name]
-                , img [src ("../xwing-data/images/" ++ upgrade.imageUrl), alt upgrade.name, title upgrade.name] []
+                , img [src ("./xwing-data/images/" ++ upgrade.imageUrl), alt upgrade.name, title upgrade.name] []
                 , div [class "name"] [text upgrade.text]
                 ]
 

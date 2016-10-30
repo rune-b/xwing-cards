@@ -8992,7 +8992,7 @@ var _rune_b$xwing_cards$Main$viewCard = function (card) {
 					_elm_lang$core$Native_List.fromArray(
 						[
 							_elm_lang$html$Html_Attributes$src(
-							A2(_elm_lang$core$Basics_ops['++'], '../xwing-data/images/', _p1.imageUrl)),
+							A2(_elm_lang$core$Basics_ops['++'], './xwing-data/images/', _p1.imageUrl)),
 							_elm_lang$html$Html_Attributes$alt(_p1.name),
 							_elm_lang$html$Html_Attributes$title(_p1.name)
 						]),
@@ -9032,7 +9032,7 @@ var _rune_b$xwing_cards$Main$viewCard = function (card) {
 					_elm_lang$core$Native_List.fromArray(
 						[
 							_elm_lang$html$Html_Attributes$src(
-							A2(_elm_lang$core$Basics_ops['++'], '../xwing-data/images/', _p2.imageUrl)),
+							A2(_elm_lang$core$Basics_ops['++'], './xwing-data/images/', _p2.imageUrl)),
 							_elm_lang$html$Html_Attributes$alt(_p2.name),
 							_elm_lang$html$Html_Attributes$title(_p2.name)
 						]),
