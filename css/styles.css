@@ -7,3 +7,36 @@ body {
 	background-color: black;
 	color: white;
 }
+
+header {
+	text-align: center;
+	font-size: 150%;
+	color: yellow;
+}
+
+section#search{
+	text-align: center;	
+}
+
+section#search input {
+	font-size: 150%;
+	background-color: navy;
+	color: white;
+}
+
+section#results{
+	margin: 1em;
+}
+section#results .card {
+	float: left;
+	margin: 0.5em;
+}
+
+section#results .card h1,
+section#results .card .name{
+	display: none;
+}
+
+section#results img {
+	height: 20em;
+}
