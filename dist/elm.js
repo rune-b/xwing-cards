@@ -8909,7 +8909,7 @@ var _rune_b$xwing_cards$XWingData$pilotDecoder = A5(
 var _rune_b$xwing_cards$XWingData$getPilots = A2(
 	_evancz$elm_http$Http$get,
 	_elm_lang$core$Json_Decode$list(_rune_b$xwing_cards$XWingData$pilotDecoder),
-	'../xwing-data/data/pilots.js');
+	'./xwing-data/data/pilots.js');
 var _rune_b$xwing_cards$XWingData$UpgradeCard = F4(
 	function (a, b, c, d) {
 		return {name: a, text: b, imageUrl: c, slot: d};
@@ -8934,7 +8934,7 @@ var _rune_b$xwing_cards$XWingData$ugradeDecoder = A5(
 var _rune_b$xwing_cards$XWingData$getUpgrades = A2(
 	_evancz$elm_http$Http$get,
 	_elm_lang$core$Json_Decode$list(_rune_b$xwing_cards$XWingData$ugradeDecoder),
-	'../xwing-data/data/upgrades.js');
+	'./xwing-data/data/upgrades.js');
 var _rune_b$xwing_cards$XWingData$Upgrade = function (a) {
 	return {ctor: 'Upgrade', _0: a};
 };

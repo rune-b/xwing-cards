@@ -38,7 +38,7 @@ getCards =
 
 getPilots: Task Http.Error Pilots
 getPilots = 
-    Http.get (Decode.list pilotDecoder) "../xwing-data/data/pilots.js"
+    Http.get (Decode.list pilotDecoder) "./xwing-data/data/pilots.js"
 
 pilotDecoder : Decoder PilotCard
 pilotDecoder =
@@ -51,7 +51,7 @@ pilotDecoder =
 
 getUpgrades: Task Http.Error Upgrades
 getUpgrades = 
-    Http.get (Decode.list ugradeDecoder) "../xwing-data/data/upgrades.js"
+    Http.get (Decode.list ugradeDecoder) "./xwing-data/data/upgrades.js"
 
 ugradeDecoder : Decoder UpgradeCard
 ugradeDecoder =
