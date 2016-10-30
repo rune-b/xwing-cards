@@ -76,8 +76,13 @@ searchCards text cards =
 
 matchCard : String -> Card -> Bool
 matchCard text card =
-    (String.contains (String.toLower text) (String.toLower card.name)) 
-    || (String.contains (String.toLower text) (String.toLower card.text)) 
+    case card of 
+        Pilot pilot ->
+            (String.contains (String.toLower text) (String.toLower pilot.name)) 
+            || (String.contains (String.toLower text) (String.toLower pilot.text)) 
+        Upgrade upgrade ->
+            (String.contains (String.toLower text) (String.toLower upgrade.name)) 
+            || (String.contains (String.toLower text) (String.toLower upgrade.text)) 
 
 -- VIEW
 
@@ -96,12 +101,21 @@ view model =
             (List.map viewCard model.searchResults)
         ]
 
+viewCard : Card -> Html Msg
+viewCard card  =
+        case card of
+        Pilot pilot ->
+            div [class "card pilot"] 
+                [ h1 [] [text pilot.name]
+                , div [] [text pilot.text]
+                ]
+        Upgrade upgrade ->            
+            div [class "card upgrade"] 
+                [ h1 [] [text upgrade.name]
+                , div [] [text upgrade.text]
+                ]
 
 -- SUBSCRIPTIONS
-
-viewCard : Card -> Html Msg
-viewCard card =
-    p [] [text (card.name ++ ", " ++ card.text)]
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
