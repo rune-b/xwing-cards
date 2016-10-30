@@ -4,7 +4,8 @@
   "description": "Searchable card database for [X-Wing: The Miniatures Game](https://www.fantasyflightgames.com/en/products/x-wing/) by [Fantasy Flight Games](http://fantasyflightgames.com/).",
   "main": "index.html",
   "scripts": {
-    "build": "elm-make ./src/app.elm --output=dist/elm.js"
+    "build": "elm-make ./src/app.elm --output=dist/elm.js",
+    "start": "elm-live ./src/app.elm --output=dist/elm.js --open"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/rune-b/xwing-cards/issues"
   },
-  "homepage": "https://github.com/rune-b/xwing-cards#readme"
+  "homepage": "https://github.com/rune-b/xwing-cards#readme",
+  "devDependencies": {
+    "elm": "^0.17.1",
+    "elm-live": "^2.6.0"
+  }
 }
