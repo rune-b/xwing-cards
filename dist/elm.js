@@ -9162,17 +9162,6 @@ var _rune_b$xwing_cards$Main$view = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A3(
-				_elm_lang$html$Html$node,
-				'style',
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$type$('text/css')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('@import url(../css/styles.css)')
-					])),
 				A2(
 				_elm_lang$html$Html$header,
 				_elm_lang$core$Native_List.fromArray(
