@@ -9002,7 +9002,7 @@ var _rune_b$xwing_cards$Main$viewCard = function (card) {
 					_elm_lang$html$Html$div,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html_Attributes$class('name')
+							_elm_lang$html$Html_Attributes$class('text')
 						]),
 					_elm_lang$core$Native_List.fromArray(
 						[
@@ -9042,7 +9042,7 @@ var _rune_b$xwing_cards$Main$viewCard = function (card) {
 					_elm_lang$html$Html$div,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html_Attributes$class('name')
+							_elm_lang$html$Html_Attributes$class('text')
 						]),
 					_elm_lang$core$Native_List.fromArray(
 						[
