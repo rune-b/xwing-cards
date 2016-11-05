@@ -3,6 +3,7 @@ module XWingData exposing (Card (Pilot, Upgrade), Cards, CardBase, getCards)
 import Http
 import Json.Decode as Decode exposing (..)
 import Task exposing (..)
+import String
 
 type alias Cards = List Card 
 type alias Pilots = List PilotCard
@@ -35,8 +36,30 @@ getCards =
         upgradesTask = Task.map (\pilots -> List.map Upgrade pilots) getUpgrades
     in 
         Task.map 
-            (\tasks -> List.concat tasks) 
+            (\tasks -> List.sortWith compareCard (List.concat tasks))
             (Task.sequence [pilotsTask, upgradesTask])
+
+compareCard: Card -> Card -> Order
+compareCard a b =
+    let 
+        name1 = 
+            case a of
+                Pilot pilot ->
+                    pilot.name
+                Upgrade upgrade ->
+                    upgrade.name
+        name2 = 
+            case b of
+                Pilot pilot ->
+                    pilot.name
+                Upgrade upgrade ->
+                    upgrade.name
+    in
+        compare (removeQuotes name1) (removeQuotes name2)
+
+removeQuotes: String -> String
+removeQuotes s =
+    String.toLower (String.filter (\c -> c /= '"') s)
 
 getPilots: Task Http.Error Pilots
 getPilots = 
