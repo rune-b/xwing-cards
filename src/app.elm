@@ -8,6 +8,7 @@ import Array exposing (..)
 import XWingData exposing (..)
 import Http
 import String
+import Json.Encode exposing (string)
 
 main =
     App.program 
@@ -113,15 +114,15 @@ viewCard card  =
 
 cardAsImage : String -> CardBase c -> Html Msg
 cardAsImage cardType card =
-    div [class ("card " ++ cardType)] 
+    div [class ("card image " ++ cardType)] 
         [ img [src ("./xwing-data/images/" ++ card.imageUrl), alt card.name, title card.name] []        
         ]
 
 cardAsText: String -> CardBase c -> Html Msg
 cardAsText cardType card =
-    div [class ("card " ++ cardType)] 
+    div [class ("card text " ++ cardType)] 
         [ h1 [] [text card.name]
-        , div [class "text"] [text card.text]
+        , div [class "text", property "innerHTML" (string card.text)] []
         ]
 
 -- SUBSCRIPTIONS

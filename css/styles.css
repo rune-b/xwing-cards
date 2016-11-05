@@ -6,7 +6,6 @@ body {
 	cursor: default;
 	background-color: black;
 	background-image: url(../images/tileable-classic-nebula-space-patterns-6.jpg);
-	color: white;
 }
 
 header {
@@ -31,14 +30,26 @@ section#results{
 }
 section#results .card {
 	display: inline-block;
-	margin: 0.5em;
+	margin: 1em 0.5em;
 	width: 15em;
 	height: 20em;
+	vertical-align: top;
 }
 
-section#results .card h1,
-section#results .card .text{
+section#results .card.text{
+	background: radial-gradient(ellipse at center, white 0%,#EFCE8E 100%);
+	border-radius: 0.9em;
 }
+
+section#results .card.text h1{
+	margin-top: 50%;
+	font-size: 120%;
+}
+section#results .card.text .text{
+	vertical-align: bottom;
+	font-size: 75%;
+	padding: 0 2em;
+}	
 
 section#results img {
 	height: 100%;
