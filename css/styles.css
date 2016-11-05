@@ -38,7 +38,6 @@ section#results .card {
 
 section#results .card h1,
 section#results .card .text{
-	display: none;
 }
 
 section#results img {

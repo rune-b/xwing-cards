@@ -1,4 +1,4 @@
-module XWingData exposing (Card (Pilot, Upgrade), Cards, getCards)
+module XWingData exposing (Card (Pilot, Upgrade), Cards, CardBase, getCards)
 
 import Http
 import Json.Decode as Decode exposing (..)
@@ -7,6 +7,8 @@ import Task exposing (..)
 type alias Cards = List Card 
 type alias Pilots = List PilotCard
 type alias Upgrades = List UpgradeCard
+type alias CardBase a = 
+    { a | name: String, text: String, imageUrl: String }
 
 type Card = Pilot PilotCard | Upgrade UpgradeCard
 

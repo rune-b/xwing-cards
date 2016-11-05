@@ -103,14 +103,25 @@ viewCard : Card -> Html Msg
 viewCard card  =
     case card of
         Pilot pilot ->
-            cardAsImage "pilot" pilot.name pilot.imageUrl
+            if String.isEmpty pilot.imageUrl 
+                then cardAsText "pilot" pilot
+                else cardAsImage "pilot" pilot            
         Upgrade upgrade -> 
-            cardAsImage "upgrade" upgrade.name upgrade.imageUrl     
+            if String.isEmpty upgrade.imageUrl 
+                then cardAsText "upgrade" upgrade
+                else cardAsImage "upgrade" upgrade
 
-cardAsImage : String -> String -> String -> Html Msg
-cardAsImage cardType name imageUrl =
+cardAsImage : String -> CardBase c -> Html Msg
+cardAsImage cardType card =
     div [class ("card " ++ cardType)] 
-        [ img [src ("./xwing-data/images/" ++ imageUrl), alt name, title name] []        
+        [ img [src ("./xwing-data/images/" ++ card.imageUrl), alt card.name, title card.name] []        
+        ]
+
+cardAsText: String -> CardBase c -> Html Msg
+cardAsText cardType card =
+    div [class ("card " ++ cardType)] 
+        [ h1 [] [text card.name]
+        , div [class "text"] [text card.text]
         ]
 
 -- SUBSCRIPTIONS
