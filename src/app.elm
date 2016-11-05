@@ -56,7 +56,7 @@ update msg model =
         Found cards ->
             ({ model | searchResults = cards }, Cmd.none)            
         GetCardsSuccess cards ->
-            ({ model | cards = cards }, Cmd.none)
+            ({ model | cards = cards, searchResults = cards }, Cmd.none)
         GetCardsFailed error ->
             let
                 x = Debug.log "GetCardsFailed" error
@@ -90,7 +90,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ header [] 
-            [ h1 [] [text "X-Wing Card Finder"]
+            [ h1 [] [text "X-Wing Card Viewer"]
             ]
         , section [id "search"]
             [ input [value model.searchString, onInput Search, autofocus True] []
@@ -101,19 +101,17 @@ view model =
 
 viewCard : Card -> Html Msg
 viewCard card  =
-        case card of
+    case card of
         Pilot pilot ->
-            div [class "card pilot"] 
-                [ h1 [] [text pilot.name]
-                , img [src ("./xwing-data/images/" ++ pilot.imageUrl), alt pilot.name, title pilot.name] []
-                , div [class "text"] [text pilot.text]
-                ]
-        Upgrade upgrade ->            
-            div [class "card upgrade"] 
-                [ h1 [] [text upgrade.name]
-                , img [src ("./xwing-data/images/" ++ upgrade.imageUrl), alt upgrade.name, title upgrade.name] []
-                , div [class "text"] [text upgrade.text]
-                ]
+            cardAsImage "pilot" pilot.name pilot.imageUrl
+        Upgrade upgrade -> 
+            cardAsImage "upgrade" upgrade.name upgrade.imageUrl     
+
+cardAsImage : String -> String -> String -> Html Msg
+cardAsImage cardType name imageUrl =
+    div [class ("card " ++ cardType)] 
+        [ img [src ("./xwing-data/images/" ++ imageUrl), alt name, title name] []        
+        ]
 
 -- SUBSCRIPTIONS
 
