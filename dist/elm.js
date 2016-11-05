@@ -8885,6 +8885,40 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
+var _rune_b$xwing_cards$XWingData$removeQuotes = function (s) {
+	return _elm_lang$core$String$toLower(
+		A2(
+			_elm_lang$core$String$filter,
+			function (c) {
+				return !_elm_lang$core$Native_Utils.eq(
+					c,
+					_elm_lang$core$Native_Utils.chr('\"'));
+			},
+			s));
+};
+var _rune_b$xwing_cards$XWingData$compareCard = F2(
+	function (a, b) {
+		var name2 = function () {
+			var _p0 = b;
+			if (_p0.ctor === 'Pilot') {
+				return _p0._0.name;
+			} else {
+				return _p0._0.name;
+			}
+		}();
+		var name1 = function () {
+			var _p1 = a;
+			if (_p1.ctor === 'Pilot') {
+				return _p1._0.name;
+			} else {
+				return _p1._0.name;
+			}
+		}();
+		return A2(
+			_elm_lang$core$Basics$compare,
+			_rune_b$xwing_cards$XWingData$removeQuotes(name1),
+			_rune_b$xwing_cards$XWingData$removeQuotes(name2));
+	});
 var _rune_b$xwing_cards$XWingData$PilotCard = F4(
 	function (a, b, c, d) {
 		return {name: a, text: b, imageUrl: c, ship: d};
@@ -8957,7 +8991,10 @@ var _rune_b$xwing_cards$XWingData$getCards = function () {
 	return A2(
 		_elm_lang$core$Task$map,
 		function (tasks) {
-			return _elm_lang$core$List$concat(tasks);
+			return A2(
+				_elm_lang$core$List$sortWith,
+				_rune_b$xwing_cards$XWingData$compareCard,
+				_elm_lang$core$List$concat(tasks));
 		},
 		_elm_lang$core$Task$sequence(
 			_elm_lang$core$Native_List.fromArray(
@@ -8967,88 +9004,71 @@ var _rune_b$xwing_cards$XWingData$getCards = function () {
 var _rune_b$xwing_cards$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
+var _rune_b$xwing_cards$Main$cardAsText = F2(
+	function (cardType, card) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'card text ', cardType))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$h1,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(card.name)
+						])),
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('text'),
+							A2(
+							_elm_lang$html$Html_Attributes$property,
+							'innerHTML',
+							_elm_lang$core$Json_Encode$string(card.text))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
+var _rune_b$xwing_cards$Main$cardAsImage = F2(
+	function (cardType, card) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'card image ', cardType))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$img,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$src(
+							A2(_elm_lang$core$Basics_ops['++'], './xwing-data/images/', card.imageUrl)),
+							_elm_lang$html$Html_Attributes$alt(card.name),
+							_elm_lang$html$Html_Attributes$title(card.name)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
 var _rune_b$xwing_cards$Main$viewCard = function (card) {
 	var _p0 = card;
 	if (_p0.ctor === 'Pilot') {
 		var _p1 = _p0._0;
-		return A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('card pilot')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$h1,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text(_p1.name)
-						])),
-					A2(
-					_elm_lang$html$Html$img,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$src(
-							A2(_elm_lang$core$Basics_ops['++'], './xwing-data/images/', _p1.imageUrl)),
-							_elm_lang$html$Html_Attributes$alt(_p1.name),
-							_elm_lang$html$Html_Attributes$title(_p1.name)
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[])),
-					A2(
-					_elm_lang$html$Html$div,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$class('text')
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text(_p1.text)
-						]))
-				]));
+		return _elm_lang$core$String$isEmpty(_p1.imageUrl) ? A2(_rune_b$xwing_cards$Main$cardAsText, 'pilot', _p1) : A2(_rune_b$xwing_cards$Main$cardAsImage, 'pilot', _p1);
 	} else {
 		var _p2 = _p0._0;
-		return A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('card upgrade')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$h1,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text(_p2.name)
-						])),
-					A2(
-					_elm_lang$html$Html$img,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$src(
-							A2(_elm_lang$core$Basics_ops['++'], './xwing-data/images/', _p2.imageUrl)),
-							_elm_lang$html$Html_Attributes$alt(_p2.name),
-							_elm_lang$html$Html_Attributes$title(_p2.name)
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[])),
-					A2(
-					_elm_lang$html$Html$div,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$class('text')
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text(_p2.text)
-						]))
-				]));
+		return _elm_lang$core$String$isEmpty(_p2.imageUrl) ? A2(_rune_b$xwing_cards$Main$cardAsText, 'upgrade', _p2) : A2(_rune_b$xwing_cards$Main$cardAsImage, 'upgrade', _p2);
 	}
 };
 var _rune_b$xwing_cards$Main$matchCard = F2(
@@ -9122,11 +9142,12 @@ var _rune_b$xwing_cards$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'GetCardsSuccess':
+				var _p8 = _p6._0;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{cards: _p6._0}),
+						{cards: _p8, searchResults: _p8}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -9174,7 +9195,7 @@ var _rune_b$xwing_cards$Main$view = function (model) {
 							[]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('X-Wing Card Finder')
+								_elm_lang$html$Html$text('X-Wing Card Viewer')
 							]))
 					])),
 				A2(
