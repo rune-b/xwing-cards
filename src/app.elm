@@ -1,5 +1,5 @@
 import Html exposing (..)
-import Html.App as App
+import Html.App
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Dom exposing (focus)
@@ -9,9 +9,10 @@ import XWingData exposing (..)
 import Http
 import String
 import Json.Encode exposing (string)
+import Filters exposing (..)
 
 main =
-    App.program 
+   Html.App.program 
     { init = init
     , view = view
     , update = update
@@ -25,17 +26,20 @@ type alias Model =
     { searchString : String
     , cards: XWingData.Cards
     , searchResults : XWingData.Cards
+    , filters: Filters.Model
     }
 
+initialModel : Model
+initialModel =
+    { searchString = ""
+    , cards = []
+    , searchResults = []
+    , filters = Filters.initialModel
+    }
 
 init : (Model, Cmd Msg)
 init = 
-    ( Model 
-        ""
-        []
-        []
-    , getCardsCmd
-    )
+    (initialModel, getCardsCmd)
 
 
 -- UPDATE
@@ -46,6 +50,7 @@ type Msg
     | GetCardsSuccess Cards
     | GetCardsFailed Http.Error
     | Found Cards
+    | FilterMsg Filters.Msg
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -53,7 +58,7 @@ update msg model =
         NoOp -> 
             model ! []
         Search text ->
-            ({ model | searchString = text }, searchCards text model.cards)
+            ({ model | searchString = text }, searchCards text model.cards model.filters)
         Found cards ->
             ({ model | searchResults = cards }, Cmd.none)            
         GetCardsSuccess cards ->
@@ -63,27 +68,34 @@ update msg model =
                 x = Debug.log "GetCardsFailed" error
             in
                 (model, Cmd.none)
+        FilterMsg filterMsg ->
+            let
+                (updatedFilters, filterCmd) = Filters.update filterMsg model.filters
+            in
+                ({ model | filters = updatedFilters}, searchCards model.searchString model.cards updatedFilters)
 
 getCardsCmd: Cmd Msg
 getCardsCmd =
     Task.perform GetCardsFailed GetCardsSuccess XWingData.getCards
 
-searchCards : String -> Cards -> Cmd Msg
-searchCards text cards =
+searchCards : String -> Cards -> Filters.Model -> Cmd Msg
+searchCards text cards filters =
     let
-        found = List.filter (matchCard text) cards
+        found = List.filter (matchCard text filters) cards
     in
         Task.perform identity identity (Task.succeed (Found found))
 
-matchCard : String -> Card -> Bool
-matchCard text card =
+matchCard : String -> Filters.Model -> Card -> Bool
+matchCard text filters card =
     case card of 
         Pilot pilot ->
-            (String.contains (String.toLower text) (String.toLower pilot.name)) 
-            || (String.contains (String.toLower text) (String.toLower pilot.text)) 
+            filters.pilots && 
+            ((String.contains (String.toLower text) (String.toLower pilot.name)) 
+            || (String.contains (String.toLower text) (String.toLower pilot.text)))
         Upgrade upgrade ->
-            (String.contains (String.toLower text) (String.toLower upgrade.name)) 
-            || (String.contains (String.toLower text) (String.toLower upgrade.text)) 
+            filters.upgrades && 
+            ((String.contains (String.toLower text) (String.toLower upgrade.name)) 
+            || (String.contains (String.toLower text) (String.toLower upgrade.text)))
 
 -- VIEW
 
@@ -92,6 +104,7 @@ view model =
     div []
         [ header [] 
             [ h1 [] [text "X-Wing Card Viewer"]
+            , Html.App.map FilterMsg (Filters.view model.filters)
             ]
         , section [id "search"]
             [ input [value model.searchString, onInput Search, autofocus True] []
