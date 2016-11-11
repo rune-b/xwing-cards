@@ -60,9 +60,9 @@ update msg model =
         Search text ->
             ({ model | searchString = text }, searchCards text model.cards model.filters)
         Found cards ->
-            ({ model | searchResults = cards }, Cmd.none)            
+            ({ model | searchResults = sortAndFilterCards cards }, Cmd.none)            
         GetCardsSuccess cards ->
-            ({ model | cards = cards, searchResults = cards }, Cmd.none)
+            ({ model | cards = cards }, Cmd.none)
         GetCardsFailed error ->
             let
                 x = Debug.log "GetCardsFailed" error
@@ -73,6 +73,28 @@ update msg model =
                 (updatedFilters, filterCmd) = Filters.update filterMsg model.filters
             in
                 ({ model | filters = updatedFilters}, searchCards model.searchString model.cards updatedFilters)
+
+sortAndFilterCards: Cards -> Cards
+sortAndFilterCards cards =    
+    List.sortWith compareCard 
+        (List.filter (\card -> not (String.isEmpty (getCommon card).imageUrl)) cards)
+
+getCommon: Card -> { name: String, text: String, imageUrl: String}
+getCommon card =
+    case card of
+        Pilot pilot ->
+            { name = pilot.name, text = pilot.text, imageUrl = pilot.imageUrl }
+        Upgrade upgrade ->
+            { name = upgrade.name, text = upgrade.text, imageUrl = upgrade.imageUrl }
+
+compareCard: Card -> Card -> Order
+compareCard a b =
+    compare (removeQuotes (getCommon a).name) (removeQuotes (getCommon b).name)
+
+
+removeQuotes: String -> String
+removeQuotes s =
+    String.toLower (String.filter (\c -> c /= '"') s)
 
 getCardsCmd: Cmd Msg
 getCardsCmd =

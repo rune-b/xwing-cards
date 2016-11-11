@@ -36,30 +36,9 @@ getCards =
         upgradesTask = Task.map (\pilots -> List.map Upgrade pilots) getUpgrades
     in 
         Task.map 
-            (\tasks -> List.sortWith compareCard (List.concat tasks))
+            (\tasks -> List.concat tasks)
             (Task.sequence [pilotsTask, upgradesTask])
 
-compareCard: Card -> Card -> Order
-compareCard a b =
-    let 
-        name1 = 
-            case a of
-                Pilot pilot ->
-                    pilot.name
-                Upgrade upgrade ->
-                    upgrade.name
-        name2 = 
-            case b of
-                Pilot pilot ->
-                    pilot.name
-                Upgrade upgrade ->
-                    upgrade.name
-    in
-        compare (removeQuotes name1) (removeQuotes name2)
-
-removeQuotes: String -> String
-removeQuotes s =
-    String.toLower (String.filter (\c -> c /= '"') s)
 
 getPilots: Task Http.Error Pilots
 getPilots = 
